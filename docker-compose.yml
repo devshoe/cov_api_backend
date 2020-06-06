@@ -1,0 +1,27 @@
+version: '2'
+
+services: 
+    mongo:
+        container_name: mongo_api
+        image: mongo:3.6
+        restart: always
+        ports: 
+            - 27017:27017
+        volumes: 
+            - ./db:/data/db
+        command: mongod --dbpath=/data/db
+    
+    flask:
+        container_name: flask
+        image: python
+        restart: always
+        ports: 
+            - 80:80
+        links: 
+            - mongo
+        volumes: 
+            - ./:/api
+        working_dir: /api
+        stdin_open: true
+        tty: true
+        command: bash
